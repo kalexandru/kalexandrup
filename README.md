@@ -3,8 +3,13 @@ DoIt Spring - Boot/Security/Social/ Application
 
 There is a need to create Database Tables for the user to be able to login via Facebook account and the application
 should be created on the facebook developer site
-Create the table in the database by executing the commands at this link
-        // http://docs.spring.io/spring-social/docs/1.1.0.RELEASE/reference/htmlsingle/#section_jdbcConnectionFactory
+Create the table in the database by executing the commands at this link:
+
+
+http://docs.spring.io/spring-social/docs/1.1.0.RELEASE/reference/htmlsingle/#section_jdbcConnectionFactory
+
+
+
 
 create table UserConnection (userId varchar(255) not null,
     providerId varchar(255) not null,
