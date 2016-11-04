@@ -22,4 +22,5 @@ create unique index UserConnectionRank on UserConnection(userId, providerId, ran
 
 
 // and then execute
+
 create unique index UserConnectionProviderUser on UserConnection(providerId, providerUserId);
