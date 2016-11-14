@@ -15,7 +15,7 @@
 				<form:label path="email">Email address</form:label>
 				<form:input path="email" type="email" class="form-control" placeholder="Enter email" />
 				<form:errors cssClass="error" path="email" />
-				<p class="help-block">Enter a unique email address. It will also be your login id.</p>
+				<p class="help-block">Enter a unique email address. It will also be your login film_id.</p>
 			</div>
 			
 			<div class="form-group">

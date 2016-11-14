@@ -1,7 +1,7 @@
 package com.movie.spring.social.repository;
 
 import com.movie.spring.social.model.Actor;
-import com.movie.spring.social.model.Category;
+import com.movie.spring.social.model.Film;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +33,21 @@ public class ActorRepository {
     public List<Actor> retrieveActors() {
         LOGGER.debug("Started ActorRepository");
         return jdbcTemplate.query("select * from actor ", new RowMapper<Actor>() {
+            @Override
+            public Actor mapRow(ResultSet rs, int rowNum) throws SQLException {
+                Actor actor = new Actor();
+                actor.setActor_id(rs.getLong("actor_id"));
+                actor.setFirst_name(rs.getString("first_name"));
+                actor.setLast_name(rs.getString("last_name"));
+                actor.setLast_update(rs.getDate("last_update"));
+                return actor;
+            }
+        });
+    }
+
+    public List<Actor> searchActorsByActorId(String id) {
+        LOGGER.debug("Started searchActorsByActorId()");
+        return jdbcTemplate.query("select * from actor act where act.actor_id =" + "'" + id + "'" + ";", new RowMapper<Actor>() {
             @Override
             public Actor mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Actor actor = new Actor();

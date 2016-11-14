@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -66,9 +64,9 @@ public class FilmController {
     public String showFilms(Model model) {
 
         List<Film> films = filmService.getFilms();
-        films = fillWithLanguage(films);
-        films = fillFilmsWithFilmActors(films);
-        model.addAttribute("films", fillFilmsWithFilmCategories(films));
+     //   films = fillWithLanguage(films);
+     //   films = fillFilmsWithFilmActors(films);
+        model.addAttribute("films", films);
         LOGGER.info("Showing all films from Data Base");
         return "films";
     }
@@ -126,33 +124,33 @@ public class FilmController {
         return category;
     }
 
-    private List<Film> fillFilmsWithFilmActors(List filmLst) {
-        Film film;
-        FilmActor filmActor;
-        Actor actr;
-        List<FilmActor> filmActors = getFilmActorService().getFilmActorObjects();
-        Iterator itrFilmActors = filmActors.iterator();
-        StringBuffer sb = null;
-        StringBuffer result = new StringBuffer();
-        for (int i=0;i<filmLst.size();i++) {
-            Collections.sort(filmActors);
-            for (int k=0;k<filmActors.size();k++) {
-
-                filmActor = filmActors.get(k);
-                if (filmActor.getFilm_id().equals(((Film)filmLst.get(i)).getFilm_id())) {
-                    actr = findActorById(filmActor.getActor_id());
-                    sb = new StringBuffer();
-                    sb.append(" ").append(actr.getFirst_name()).append(" ").append(actr.getLast_name());
-
-                    result.append(sb);
-                }
-
-            }
-            ((Film)filmLst.get(i)).setActorName(new String(result.toString()));
-            result = new StringBuffer();
-        }
-        return filmLst;
-    }
+//    private List<Film> fillFilmsWithFilmActors(List filmLst) {
+//        Film film;
+//        FilmActor filmActor;
+//        Actor actr;
+//        List<FilmActor> filmActors = getFilmActorService().getFilmActorObjects();
+//        Iterator itrFilmActors = filmActors.iterator();
+//        StringBuffer sb = null;
+//        StringBuffer result = new StringBuffer();
+//        for (int i=0;i<filmLst.size();i++) {
+//
+//            for (int k=0;k<filmActors.size();k++) {
+//
+//                filmActor = filmActors.get(k);
+//                if (filmActor.getFilm_id().equals(((Film)filmLst.get(i)).getFilm_id())) {
+//                    actr = findActorById(filmActor.getFilm_id());
+//                    sb = new StringBuffer();
+//                    sb.append(" ").append(actr.getFirst_name()).append(" ").append(actr.getLast_name());
+//
+//                    result.append(sb);
+//                }
+//
+//            }
+//            ((Film)filmLst.get(i)).setActorName(new String(result.toString()));
+//            result = new StringBuffer();
+//        }
+//        return filmLst;
+//    }
 
     private Actor findActorById(Long id){
         List<Actor> actorList = getActorService().getActorObjects();

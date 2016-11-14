@@ -24,6 +24,9 @@ public class ActorService {
         return getActorRepository().retrieveActors();
     }
 
+    public List getActorById(String id){
+        return getActorRepository().searchActorsByActorId(id);
+    }
     public ActorRepository getActorRepository() {
         return actorRepository;
     }

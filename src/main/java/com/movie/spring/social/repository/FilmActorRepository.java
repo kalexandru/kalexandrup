@@ -1,5 +1,7 @@
 package com.movie.spring.social.repository;
 
+//import com.movie.spring.social.model.FilmActor;
+import com.movie.spring.social.model.Actor;
 import com.movie.spring.social.model.FilmActor;
 import com.movie.spring.social.model.FilmCategory;
 import org.slf4j.Logger;
@@ -42,7 +44,35 @@ public class FilmActorRepository {
             }
         });
     }
+    @Cacheable("filmActorsByActorId")
+    public List<FilmActor> searchFilmActorsByActorId(String id) {
+        LOGGER.debug("Started searchFilmActorsByActorId()");
+        return jdbcTemplate.query("select * from film_actor fa where fa.actor_id =" + "'" + id + "'" + ";", new RowMapper<FilmActor>() {
+            @Override
+            public FilmActor mapRow(ResultSet rs, int rowNum) throws SQLException {
+                FilmActor filmActor = new FilmActor();
+                filmActor.setActor_id(rs.getLong("actor_id"));
+                filmActor.setFilm_id(rs.getLong("film_id"));
+                filmActor.setLast_update(rs.getDate("last_update"));
+                return filmActor;
+            }
+        });
+    }
 
+    @Cacheable("filmActorsByFilmId")
+    public List<FilmActor> searchFilmActorsByFilmId(String id) {
+        LOGGER.debug("Started searchFilmActorsByFilmId()");
+        return jdbcTemplate.query("select * from film_actor fa where fa.film_id =" + "'" + id + "'" + ";", new RowMapper<FilmActor>() {
+            @Override
+            public FilmActor mapRow(ResultSet rs, int rowNum) throws SQLException {
+                FilmActor filmActor = new FilmActor();
+                filmActor.setActor_id(rs.getLong("actor_id"));
+                filmActor.setFilm_id(rs.getLong("film_id"));
+                filmActor.setLast_update(rs.getDate("last_update"));
+                return filmActor;
+            }
+        });
+    }
 
 
 }

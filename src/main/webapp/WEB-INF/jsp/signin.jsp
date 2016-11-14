@@ -24,13 +24,13 @@
 		
 			<div class="form-group">
 				<label for="username">Email address</label>
-				<input id="username" name="username" type="email" class="form-control" placeholder="Enter email" />
+				<input film_id="username" name="username" type="email" class="form-control" placeholder="Enter email" />
 				<p class="help-block">Enter your email address.</p>
 			</div>
 			
 			<div class="form-group">
 				<label for="password">Password</label>
-				<input type="password" id="password" name="password" class="form-control" placeholder="Password" />
+				<input type="password" film_id="password" name="password" class="form-control" placeholder="Password" />
 				<form:errors cssClass="error" path="password" />
 			</div>
 			

@@ -25,6 +25,15 @@ public class FilmActorService {
         return getFilmActorRepository().retrieveFilmActors();
     }
 
+    public List getFilmActorsByActorId(String id) {
+
+        return getFilmActorRepository().searchFilmActorsByActorId(id);
+    }
+
+    public List getFilmActorsByFilmId(String id) {
+        return getFilmActorRepository().searchFilmActorsByFilmId(id);
+    }
+
     public FilmActorRepository getFilmActorRepository() {
         return filmActorRepository;
     }

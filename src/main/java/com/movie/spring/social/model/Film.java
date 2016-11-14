@@ -1,36 +1,24 @@
 package com.movie.spring.social.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import javax.persistence.Table;
 
 import org.hibernate.search.annotations.*;
 
-import org.hibernate.search.annotations.Index;
 import org.hibernate.search.bridge.builtin.LongBridge;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 @Entity
-@Table(name="film", indexes = {
-        @javax.persistence.Index(columnList="film_id", name="film_id_idx")
-})
+@Table
 @Indexed
-public class Film implements Serializable {
+public class Film implements Serializable,Comparable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Film.class);
 
@@ -47,24 +35,11 @@ public class Film implements Serializable {
     private Long language_id;
 
 
-    private Collection<FilmCategory> filmCategories = new HashSet<FilmCategory>();
-    private Collection<FilmActor> filmActors = new HashSet<FilmActor>();
+   // private Collection<FilmCategory> filmCategories = new HashSet<FilmCategory>();
+
+    private Set<FilmActor> filmActors;
 
 
-    public Film(Long film_id, String title, String description, Long release_year, Long length, String rating, String language, String categoryName, String actorName, Long language_id, StringBuffer actors, Collection<FilmCategory> filmCategories, Collection<FilmActor> filmActors) {
-        this.film_id = film_id;
-        this.title = title;
-        this.description = description;
-        this.release_year = release_year;
-        this.length = length;
-        this.rating = rating;
-        this.language = language;
-        this.categoryName = categoryName;
-        this.actorName = actorName;
-        this.language_id = language_id;
-        this.filmCategories = filmCategories;
-        this.filmActors = filmActors;
-    }
 
     public Film() {
 
@@ -80,7 +55,7 @@ public class Film implements Serializable {
     }
 
     @Id
-    @Column(name = "film_id", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getFilm_id() {
         return film_id;
     }
@@ -88,7 +63,12 @@ public class Film implements Serializable {
     public void setFilm_id(Long film_id) {
         this.film_id = film_id;
     }
-    @Field(index= org.hibernate.search.annotations.Index.YES, analyze= Analyze.YES, store= Store.NO)
+
+
+
+
+
+        @Field(index= org.hibernate.search.annotations.Index.YES, analyze= Analyze.YES, store= Store.NO)
     public String getTitle() {
         return title;
     }
@@ -132,27 +112,27 @@ public class Film implements Serializable {
         this.categoryName = categoryName;
     }
 
-    @OneToMany(mappedBy = "film")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @IndexedEmbedded
-    public Collection<FilmCategory> getFilmCategories() {
-        return filmCategories;
-    }
 
-    public void setFilmCategories(Collection<FilmCategory> filmCategories) {
-        this.filmCategories = filmCategories;
-    }
+//    @IndexedEmbedded(depth = 1)
+//    public Collection<FilmCategory> getFilmCategories() {
+//        return filmCategories;
+//    }
+//
+//    public void setFilmCategories(Collection<FilmCategory> filmCategories) {
+//        this.filmCategories = filmCategories;
+//    }
 
     @OneToMany(mappedBy = "film")
-    @LazyCollection(LazyCollectionOption.FALSE)
+    //@JoinColumn(name="film_id", insertable = false , updatable = false)
     @IndexedEmbedded
-    public Collection<FilmActor> getFilmActors() {
+    public Set<FilmActor> getFilmActors() {
         return filmActors;
     }
 
-    public void setFilmActors(Collection<FilmActor> filmActors) {
+    public void setFilmActors(Set<FilmActor> filmActors) {
         this.filmActors = filmActors;
     }
+
     @Field(index= org.hibernate.search.annotations.Index.YES, analyze=Analyze.YES, store=Store.NO)
     @FieldBridge(impl = LongBridge.class)
     public Long getRelease_year() {
@@ -181,52 +161,18 @@ public class Film implements Serializable {
         this.rating = rating;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Film film = (Film) o;
-
-        if (film_id != null ? !film_id.equals(film.film_id) : film.film_id != null) return false;
-        if (title != null ? !title.equals(film.title) : film.title != null) return false;
-        if (description != null ? !description.equals(film.description) : film.description != null) return false;
-        if (release_year != null ? !release_year.equals(film.release_year) : film.release_year != null) return false;
-        if (length != null ? !length.equals(film.length) : film.length != null) return false;
-        if (rating != null ? !rating.equals(film.rating) : film.rating != null) return false;
-        if (language != null ? !language.equals(film.language) : film.language != null) return false;
-        if (categoryName != null ? !categoryName.equals(film.categoryName) : film.categoryName != null) return false;
-        if (actorName != null ? !actorName.equals(film.actorName) : film.actorName != null) return false;
-        if (language_id != null ? !language_id.equals(film.language_id) : film.language_id != null) return false;
-        if (filmCategories != null ? !filmCategories.equals(film.filmCategories) : film.filmCategories != null)
-            return false;
-        return filmActors != null ? filmActors.equals(film.filmActors) : film.filmActors == null;
-
-    }
 
     @Override
-    public int hashCode() {
-        int result = film_id != null ? film_id.hashCode() : 0;
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (release_year != null ? release_year.hashCode() : 0);
-        result = 31 * result + (length != null ? length.hashCode() : 0);
-        result = 31 * result + (rating != null ? rating.hashCode() : 0);
-        result = 31 * result + (language != null ? language.hashCode() : 0);
-        result = 31 * result + (categoryName != null ? categoryName.hashCode() : 0);
-        result = 31 * result + (actorName != null ? actorName.hashCode() : 0);
-        result = 31 * result + (language_id != null ? language_id.hashCode() : 0);
-        result = 31 * result + (filmCategories != null ? filmCategories.hashCode() : 0);
-        result = 31 * result + (filmActors != null ? filmActors.hashCode() : 0);
-        return result;
+    public int compareTo(Object o) {
+        return 0;
     }
-
 
     @Override
     public String toString() {
         StringBuffer strBuff = new StringBuffer();
         strBuff.append("film_id : ").append(getFilm_id());
         strBuff.append(", title : ").append(getTitle());
+        strBuff.append(", description : ").append(getDescription());
 
         return strBuff.toString();
     }

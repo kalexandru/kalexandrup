@@ -1,5 +1,9 @@
 package com.movie.spring.social.model;
 
+import org.hibernate.search.annotations.ContainedIn;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -7,15 +11,19 @@ import java.util.Date;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 @Entity(name = "FilmActor")
-@Table(name = "film_actor")
-public class FilmActor implements Serializable,Comparable {
+@Table
+@Indexed
+public class FilmActor implements Serializable {
 
     private Long film_id;
     private Long actor_id;
+
     private Film film;
     private Actor actor;
+
     private Date last_update;
 
     public FilmActor() {
@@ -29,8 +37,6 @@ public class FilmActor implements Serializable,Comparable {
         this.last_update = last_update;
     }
 
-    @Id
-    @Column(name = "film_id", unique = true, nullable = false)
     public Long getFilm_id() {
         return film_id;
     }
@@ -38,7 +44,7 @@ public class FilmActor implements Serializable,Comparable {
     public void setFilm_id(Long film_id) {
         this.film_id = film_id;
     }
-
+    @Id
     public Long getActor_id() {
         return actor_id;
     }
@@ -46,8 +52,23 @@ public class FilmActor implements Serializable,Comparable {
     public void setActor_id(Long actor_id) {
         this.actor_id = actor_id;
     }
+
+//    @OneToMany(mappedBy = "actors")
+//    @ContainedIn
+//    public Set<Film> getFilmActors() {
+//        return films;
+//    }
+
+//
+//    @OneToMany(mappedBy = "films")
+//    @ContainedIn
+//    public Set<Actor> getFilmActors() {
+//        return actors;
+//    }
+
     @ManyToOne
-    @JoinColumn(name = "film_id", insertable = false, updatable = false)
+    @JoinColumn(name = "film_id",  insertable = false , updatable = false)
+    @ContainedIn
     public Film getFilm() {
         return film;
     }
@@ -56,7 +77,8 @@ public class FilmActor implements Serializable,Comparable {
         this.film = film;
     }
     @ManyToOne
-    @JoinColumn(name = "actor_id" ,insertable = false, updatable = false)
+    @JoinColumn(name = "actor_id",  insertable = false , updatable = false)
+    @ContainedIn
     public Actor getActor() {
         return actor;
     }
@@ -82,8 +104,6 @@ public class FilmActor implements Serializable,Comparable {
 
         if (film_id != null ? !film_id.equals(filmActor.film_id) : filmActor.film_id != null) return false;
         if (actor_id != null ? !actor_id.equals(filmActor.actor_id) : filmActor.actor_id != null) return false;
-        if (film != null ? !film.equals(filmActor.film) : filmActor.film != null) return false;
-        if (actor != null ? !actor.equals(filmActor.actor) : filmActor.actor != null) return false;
         return last_update != null ? last_update.equals(filmActor.last_update) : filmActor.last_update == null;
 
     }
@@ -92,26 +112,19 @@ public class FilmActor implements Serializable,Comparable {
     public int hashCode() {
         int result = film_id != null ? film_id.hashCode() : 0;
         result = 31 * result + (actor_id != null ? actor_id.hashCode() : 0);
-        result = 31 * result + (film != null ? film.hashCode() : 0);
-        result = 31 * result + (actor != null ? actor.hashCode() : 0);
         result = 31 * result + (last_update != null ? last_update.hashCode() : 0);
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "FilmActor{" +
-                "film_id=" + film_id +
-                ", actor_id=" + actor_id +
-                ", film=" + film +
-                ", actor=" + actor +
-                ", last_update=" + last_update +
-                '}';
-    }
 
     @Override
-    public int compareTo(Object o) {
-        return 0;
+    public String toString() {
+        StringBuffer strBuff = new StringBuffer();
+        strBuff.append("actor_id : ").append(getActor_id());
+        strBuff.append(", film_id : ").append(getFilm_id());
+
+
+        return strBuff.toString();
     }
 }
 

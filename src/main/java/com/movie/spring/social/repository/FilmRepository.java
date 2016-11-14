@@ -53,8 +53,8 @@ public class FilmRepository {
         });
     }
 
-    public List<Film> searchFilmsByTitle(String title) {
-        return jdbcTemplate.query("select * from film f where f.title =" + "'" + title + "'" + ";", new RowMapper<Film>() {
+    public List<Film> searchFilmsByFilm_id(String film_id) {
+        return jdbcTemplate.query("select * from film f where f.film_id =" + "'" + film_id + "'" + ";", new RowMapper<Film>() {
             @Override
             public Film mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Film film = new Film();

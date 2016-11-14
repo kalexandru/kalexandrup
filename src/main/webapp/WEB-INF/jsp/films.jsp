@@ -5,8 +5,6 @@
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@include file="includes/header.jsp"%>
 
-
-
 <table class="filterable">
     <tr>
         <th>Title</th>
@@ -27,6 +25,7 @@
     </tr>
     <c:forEach var="film" items="${films}">
         <tr>
+
             <td ><c:out value="${film.title}"></c:out></td>
 
             <td ><c:out value="${film.description}"></c:out></td>
@@ -42,6 +41,7 @@
             <td ><c:out value="${film.rating}"></c:out></td>
 
             <td ><c:out value="${film.actorName}"></c:out></td>
+
         </tr>
     </c:forEach>
 </table>

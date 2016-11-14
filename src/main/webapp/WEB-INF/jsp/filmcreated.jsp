@@ -11,6 +11,6 @@
     <title></title>
 </head>
 <body>
-Film created: <a href="${pageContext.request.contextPath}/films">click here to view current messegaes</a>
+Film created: <a href="${pageContext.request.contextPath}/film">click here to view current messegaes</a>
 </body>
 </html>

@@ -37,8 +37,8 @@ public class FilmService {
 
         }
 
-        public List<Film> searchTitle(String title){
-            return filmRepository.searchFilmsByTitle(title);
+        public List<Film> searchFilmById(String film_id){
+            return filmRepository.searchFilmsByFilm_id(film_id);
         }
 
 //        public List<Film> filter(String firstTime,String secondTime){
